@@ -15,11 +15,12 @@ var client = util.NotionClient(os.Getenv("NOTION_AUTH_token"))
 func main() {
     util.NotionExport(client, "03970d328a2f4278859915d0a88ae830")
     util.NotionPage(client, "03970d328a2f4278859915d0a88ae830")
-    os.Chdir("../")
-    cmd := exec.Command("./gitpush.sh","test3")
-    if err := cmd.Run(); err != nil {
-        fmt.Println("Error:", cmd.String());
-        fmt.Println("Error:", cmd.Stderr);
+    output, err := exec.Command("./gitpush.sh","test3").CombinedOutput()
+    if err != nil {
+        fmt.Println("Error when running command.  Output:")
+        fmt.Println(string(output))
+        fmt.Printf("Got command status: %s\n", err.Error())
+        return
     }
 
 }

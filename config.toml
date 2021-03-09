@@ -37,7 +37,8 @@ disqusShortname = "tamama"
     maxSeeAlsoItems = 5
 
     # Custom CSS
-    
+    [params]
+        custon_css = ["<i class=fa fax-watermelon"></i> fa fax-watermelon"]
     # Custom JS
 
 [taxonomies]

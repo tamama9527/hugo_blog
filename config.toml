@@ -2,6 +2,7 @@ baseurl = "https://blog.tamama.pw"
 title = "Tamama"
 theme = "hugo-coder"
 
+
 languagecode = "en"
 defaultcontentlanguage = "en"
 
@@ -21,7 +22,7 @@ disqusShortname = "tamama"
     avatarurl = "images/avatar.jpg"
     footercontent = "靈魂不死 學習不止"
     colorScheme = "dark"
-
+    favicon_32 = "/img/favicon-32x32.png"
     dateformat = "January 2, 2006"
 
     hideCredits = true
@@ -37,8 +38,6 @@ disqusShortname = "tamama"
     maxSeeAlsoItems = 5
 
     # Custom CSS
-    [params]
-        custon_css = ["<i class=fa fax-watermelon"></i> fa fax-watermelon"]
     # Custom JS
 
 [taxonomies]

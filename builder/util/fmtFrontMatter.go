@@ -46,7 +46,7 @@ func (fm frontMatter) GetFile() string {
 	var ret string
     log.Println(fm.PageID)
 	err := filepath.Walk(contentPath, func(path string, info os.FileInfo, err error) error {
-		if strings.Contains(path, fm.PageID) {
+		if strings.Contains(path, fm.PageID) && strings.Contains(path, ".md") {
 			ret = path
 		}
 		if err != nil {

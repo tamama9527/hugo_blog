@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+    
+    
+
+    <meta name="author" content="Tamama">
+    <meta name="description" content="Build caddy server hugo&#43;github    caddy跟hugo兩個都是使用golang這個語言寫的，效能妥妥的
+caddy還有很多優點除了效能好，還有自動簽證書和configure檔案方便好寫，並且有很多外掛功能，我們這次也會用到其中一個騷操作。
+1.我們需要golang來編譯hugo的source code    這裡在linux上，我推薦先安裝brew再透過brew來安裝hugo，之後更新會方便很多，brew也會幫你把需要的套件一併安裝
+Homebrew on Linux
+Install Hugo
+p.s如果中途發生ram不夠的情況，可以看我上一篇文章
+安裝完成後可以下
+hugo version  來確認是否安裝成功
+2.再來安裝caddy，可以按照底下網址操作    caddy官方脚本一键安装与使用
+裡面比較需要注意的是在配置systemd時
+sudo curl -s https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service -o /etc/systemd/system/caddy.service sudo systemctl daemon-reload sudo systemctl enable caddy.service sudo systemctl status caddy.service  可以看個人需求，我個人在ProtectHome這邊從true改成false，方便之後的github webhook，因為只有跑hugo所以不太需要擔心安全性的問題，但如果有跑其他的服務這裡可以斟酌一下
+;Hide /home, /root, and /run/user. Nobody will steal your SSH-keys. ProtectHome=false  3.接下來我們開始編寫caddyfile和處理github webhook    首先當然要再github創新一個新的repo，然後在caddyfile中填入必要資訊，比如說repo的網址，要選擇哪個branch，要放到哪裡，接受到這個請求後要執行那個指令，你的webhooks key是什麼，都填好之後我們將畫面回到github上。">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Build caddy server hugo&#43;github"/>
+<meta name="twitter:description" content="Build caddy server hugo&#43;github    caddy跟hugo兩個都是使用golang這個語言寫的，效能妥妥的
+caddy還有很多優點除了效能好，還有自動簽證書和configure檔案方便好寫，並且有很多外掛功能，我們這次也會用到其中一個騷操作。
+1.我們需要golang來編譯hugo的source code    這裡在linux上，我推薦先安裝brew再透過brew來安裝hugo，之後更新會方便很多，brew也會幫你把需要的套件一併安裝
+Homebrew on Linux
+Install Hugo
+p.s如果中途發生ram不夠的情況，可以看我上一篇文章
+安裝完成後可以下
+hugo version  來確認是否安裝成功
+2.再來安裝caddy，可以按照底下網址操作    caddy官方脚本一键安装与使用
+裡面比較需要注意的是在配置systemd時
+sudo curl -s https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service -o /etc/systemd/system/caddy.service sudo systemctl daemon-reload sudo systemctl enable caddy.service sudo systemctl status caddy.service  可以看個人需求，我個人在ProtectHome這邊從true改成false，方便之後的github webhook，因為只有跑hugo所以不太需要擔心安全性的問題，但如果有跑其他的服務這裡可以斟酌一下
+;Hide /home, /root, and /run/user. Nobody will steal your SSH-keys. ProtectHome=false  3.接下來我們開始編寫caddyfile和處理github webhook    首先當然要再github創新一個新的repo，然後在caddyfile中填入必要資訊，比如說repo的網址，要選擇哪個branch，要放到哪裡，接受到這個請求後要執行那個指令，你的webhooks key是什麼，都填好之後我們將畫面回到github上。"/>
+
+    <meta property="og:title" content="Build caddy server hugo&#43;github" />
+<meta property="og:description" content="Build caddy server hugo&#43;github    caddy跟hugo兩個都是使用golang這個語言寫的，效能妥妥的
+caddy還有很多優點除了效能好，還有自動簽證書和configure檔案方便好寫，並且有很多外掛功能，我們這次也會用到其中一個騷操作。
+1.我們需要golang來編譯hugo的source code    這裡在linux上，我推薦先安裝brew再透過brew來安裝hugo，之後更新會方便很多，brew也會幫你把需要的套件一併安裝
+Homebrew on Linux
+Install Hugo
+p.s如果中途發生ram不夠的情況，可以看我上一篇文章
+安裝完成後可以下
+hugo version  來確認是否安裝成功
+2.再來安裝caddy，可以按照底下網址操作    caddy官方脚本一键安装与使用
+裡面比較需要注意的是在配置systemd時
+sudo curl -s https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service -o /etc/systemd/system/caddy.service sudo systemctl daemon-reload sudo systemctl enable caddy.service sudo systemctl status caddy.service  可以看個人需求，我個人在ProtectHome這邊從true改成false，方便之後的github webhook，因為只有跑hugo所以不太需要擔心安全性的問題，但如果有跑其他的服務這裡可以斟酌一下
+;Hide /home, /root, and /run/user. Nobody will steal your SSH-keys. ProtectHome=false  3.接下來我們開始編寫caddyfile和處理github webhook    首先當然要再github創新一個新的repo，然後在caddyfile中填入必要資訊，比如說repo的網址，要選擇哪個branch，要放到哪裡，接受到這個請求後要執行那個指令，你的webhooks key是什麼，都填好之後我們將畫面回到github上。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.tamama.pw/posts/build-caddy-server-hugo&#43;github/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-10-07T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2019-10-07T00:00:00&#43;00:00" />
+
+
+
+    <title>
+  Build caddy server hugo&#43;github · Tamama
+</title>
+
+    
+      <link rel="canonical" href="https://blog.tamama.pw/posts/build-caddy-server-hugo&#43;github/">
+    
+
+    
+    
+    <link rel="preload" href="https://blog.tamama.pw/fonts/forkawesome-webfont.woff2?v=1.1.7" as="font" type="font/woff2" integrity="sha256-hEIt6X6xzye8ubyk8/uxjz68cRZHsJxoKS9fQ8idUGQ=" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://blog.tamama.pw/css/coder.min.abe8b6775d85a01169c10329309df501aa8a008ab354002f7858f077cae76020.css" integrity="sha256-q&#43;i2d12FoBFpwQMpMJ31AaqKAIqzVAAveFjwd8rnYCA=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://blog.tamama.pw/css/coder-dark.min.89c82b6022b96f77aeb521b240daec4f87ea029d84d1c78b8acd0735b91b3c92.css" integrity="sha256-icgrYCK5b3eutSGyQNrsT4fqAp2E0ceLis0HNbkbPJI=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://blog.tamama.pw/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://blog.tamama.pw/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://blog.tamama.pw/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://blog.tamama.pw/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.81.0" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-dark"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://blog.tamama.pw/">
+      Tamama
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://blog.tamama.pw/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://blog.tamama.pw/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://blog.tamama.pw/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://blog.tamama.pw/contact/">Contact me</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://blog.tamama.pw/posts/build-caddy-server-hugo&#43;github/">
+              Build caddy server hugo&#43;github
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2019-10-07T00:00:00Z'>
+                October 7, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              One-minute read
+            </span>
+          </div>
+          
+          
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <a href="https://blog.tamama.pw/tags/linux/">linux</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h1 id="build-caddy-server-hugogithub">
+  Build caddy server hugo+github
+  <a class="heading-link" href="#build-caddy-server-hugogithub">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<p>caddy跟hugo兩個都是使用golang這個語言寫的，效能妥妥的</p>
+<p>caddy還有很多優點除了效能好，還有自動簽證書和configure檔案方便好寫，並且有很多外掛功能，我們這次也會用到其中一個騷操作。</p>
+<h2 id="1我們需要golang來編譯hugo的source-code">
+  1.我們需要golang來編譯hugo的source code
+  <a class="heading-link" href="#1%e6%88%91%e5%80%91%e9%9c%80%e8%a6%81golang%e4%be%86%e7%b7%a8%e8%ad%afhugo%e7%9a%84source-code">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>這裡在linux上，我推薦先安裝brew再透過brew來安裝hugo，之後更新會方便很多，brew也會幫你把需要的套件一併安裝</p>
+<p><a href="https://docs.brew.sh/Homebrew-on-Linux">Homebrew on Linux</a></p>
+<p><a href="https://gohugo.io/getting-started/installing/">Install Hugo</a></p>
+<p>p.s如果中途發生ram不夠的情況，可以看我上一篇文章</p>
+<p>安裝完成後可以下</p>
+<pre><code>hugo version
+</code></pre>
+<p>來確認是否安裝成功</p>
+<h2 id="2再來安裝caddy可以按照底下網址操作">
+  2.再來安裝caddy，可以按照底下網址操作
+  <a class="heading-link" href="#2%e5%86%8d%e4%be%86%e5%ae%89%e8%a3%9dcaddy%e5%8f%af%e4%bb%a5%e6%8c%89%e7%85%a7%e5%ba%95%e4%b8%8b%e7%b6%b2%e5%9d%80%e6%93%8d%e4%bd%9c">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p><a href="https://medium.com/@jestem/caddy%E5%AE%98%E6%96%B9%E8%84%9A%E6%9C%AC%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8-1e6d25154804">caddy官方脚本一键安装与使用</a></p>
+<p>裡面比較需要注意的是在配置systemd時</p>
+<pre><code>sudo curl -s  https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service  -o /etc/systemd/system/caddy.service
+sudo systemctl daemon-reload
+sudo systemctl enable caddy.service
+sudo systemctl status caddy.service
+</code></pre>
+<p>可以看個人需求，我個人在ProtectHome這邊從true改成false，方便之後的github webhook，因為只有跑hugo所以不太需要擔心安全性的問題，但如果有跑其他的服務這裡可以斟酌一下</p>
+<pre><code>;Hide /home, /root, and /run/user. Nobody will steal your SSH-keys.
+ProtectHome=false
+</code></pre>
+<h2 id="3接下來我們開始編寫caddyfile和處理github-webhook">
+  3.接下來我們開始編寫caddyfile和處理github webhook
+  <a class="heading-link" href="#3%e6%8e%a5%e4%b8%8b%e4%be%86%e6%88%91%e5%80%91%e9%96%8b%e5%a7%8b%e7%b7%a8%e5%af%abcaddyfile%e5%92%8c%e8%99%95%e7%90%86github-webhook">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>首先當然要再github創新一個新的repo，然後在caddyfile中填入必要資訊，比如說repo的網址，要選擇哪個branch，要放到哪裡，接受到這個請求後要執行那個指令，你的webhooks key是什麼，都填好之後我們將畫面回到github上。</p>
+<p><img src="../Untitled-0bd7ed8d-6ad1-490f-b14e-6d5f6ce5f7bf.png" alt=""></p>
+<p>然後進入設定裡面有Webhooks這個選項，點選Add webhook</p>
+<p><img src="../Untitled-51487f9a-1be7-4641-b6ca-df54c06aeca7.png" alt=""></p>
+<p>填入你要接受webhooks的網址和Secret，並將content type選成application/json和將ssl verification打開((反正caddy自帶https，然後點選Just the push event。</p>
+<h2 id="4完成">
+  4.完成
+  <a class="heading-link" href="#4%e5%ae%8c%e6%88%90">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>之後你就可以將你邊寫好的md放入clone下來的hugo資料夾裡面然後再push上github，你的caddy server就會接受到通知他會clone最新的repo下來並自動執行hugo指令，一個自動更新的hugo server就完成摟!</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "tamama" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>靈魂不死 學習不止</p>
+      
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+        
+        <script src="https://blog.tamama.pw/js/dark-mode.min.aee9c8a464eb7b3534c7110f7c5e169e7039e2fd92710e0626d451d6725af137.js" integrity="sha256-runIpGTrezU0xxEPfF4WnnA54v2ScQ4GJtRR1nJa8Tc="></script>
+      
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

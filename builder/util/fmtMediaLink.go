@@ -26,11 +26,10 @@ func fmtMediaLink(file string) {
 
     
 	// regexp find path `!()[path]`
-	reg = regexp.MustCompile(`\!\[.*\]\((.+)\)`)
+	reg = regexp.MustCompile(`\!\[.*\]\((.+)\)\n`)
     md = reg.ReplaceAllString(md,"![]($1)")
 	for _, m := range reg.FindAllString(md, -1) {
-        log.Println(m)
-        removeReg := regexp.MustCompile(`\!\[.*\]\(.*\/([^\/]*)\)`)
+        removeReg := regexp.MustCompile(`\!\[.*\]\(.*\/([^\/]*)\)\n`)
         media := removeReg.FindStringSubmatch(m)[1]
         mediaName := pageID+"-" + media
         md = removeReg.ReplaceAllString(md,"![](../"+mediaName+")")

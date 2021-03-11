@@ -10,9 +10,13 @@ tags = ["golang","linux"]
 
 Notion是我很喜歡使用的程式，可以很視覺的安排工作內容，寫寫文章。
 
-![](../9546ec4cc5ec495d8a5d9ccb4346003f-notion-labs-inc-logo-vector.png)其中最重要一點是Notion支援markdown，這大大的方便我們這些寫程式的人們可以撰寫排版漂亮的文章了。
+![Notion%20to%20Hugo%2047fb26f1343e42b4a4857f6b83c6c379/notion-labs-inc-logo-vector.png](Notion%20to%20Hugo%2047fb26f1343e42b4a4857f6b83c6c379/notion-labs-inc-logo-vector.png)
 
-![](../9546ec4cc5ec495d8a5d9ccb4346003f-notion-labs-inc-logo-vector.png)再來Hugo是一個很棒的靜態網頁編譯器，一樣也是用go寫的
+其中最重要一點是Notion支援markdown，這大大的方便我們這些寫程式的人們可以撰寫排版漂亮的文章了。
+
+![Notion%20to%20Hugo%2047fb26f1343e42b4a4857f6b83c6c379/hugo-logo-wide.svg](Notion%20to%20Hugo%2047fb26f1343e42b4a4857f6b83c6c379/hugo-logo-wide.svg)
+
+再來Hugo是一個很棒的靜態網頁編譯器，一樣也是用go寫的
 
 基於上面幾個因素，我想把notion當作寫BLOG的平台，但這會有幾個困點點需要克服。
 

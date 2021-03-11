@@ -66,7 +66,6 @@ func (fm frontMatter) AddFrontMatter(in string) string {
     // remove first H1
     reg := regexp.MustCompile(`^# (.+)\n\n`)
 
-    log.Println(md)
     //get the post title
     orginTitle := reg.FindStringSubmatch(md)[0]
     titleName := reg.FindStringSubmatch(md)[1]
@@ -100,7 +99,8 @@ func (fm frontMatter) AddFrontMatter(in string) string {
     reg = regexp.MustCompile(`發布時間:.+`)
     md = reg.ReplaceAllString(md,"")
 
-    reg = regexp.MustCompile(``)
+    log.Println(md)
+
 	return md
 }
 

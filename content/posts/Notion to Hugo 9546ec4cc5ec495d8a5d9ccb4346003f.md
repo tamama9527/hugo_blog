@@ -1,5 +1,5 @@
 +++
-date = "2021-03-29"
+date = "2021-03-30"
 title = "Notion to Hugo"
 slug = "notion-to-hugo"
 tags = ["golang","linux"]

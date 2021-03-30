@@ -34,13 +34,12 @@ func fmtMediaLink(file string) {
         media := removeReg.FindStringSubmatch(m)[1]
         mediaName := pageID+"-" + media
         log.Println("Find Media Name:"+mediaName)
-//        md = removeReg.ReplaceAllString(md,"![](../"+mediaName+")\n")
         md = strings.Replace(md,m,"![](../"+mediaName+")\n",-1)
 
 		extractMedia(media,mediaName, folderName)
 	}
     reg = regexp.MustCompile(`\[(.+)\]\((.+)\)`)
-    md = reg.ReplaceAllString(md,"[$1]($2)")
+    md = reg.ReplaceAllString(md,"[$2]($2)")
     log.Println("After Fix")
     log.Println(md)
 	// fix media link to MD

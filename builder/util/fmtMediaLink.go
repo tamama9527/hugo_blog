@@ -6,6 +6,7 @@ import (
     "path/filepath"
 	"os"
 	"regexp"
+    "strings"
     "net/url"
 )
 
@@ -16,7 +17,6 @@ func fmtMediaLink(file string) {
 		panic(err)
 	}
     md := string(bytes)
-    log.Println(file)
 
     reg := regexp.MustCompile(`\w{32}`)
     pageID := reg.FindString(file)
@@ -29,16 +29,19 @@ func fmtMediaLink(file string) {
 	reg = regexp.MustCompile(`\!\[.*\]\((.+)\)\n`)
     md = reg.ReplaceAllString(md,"![]($1)")
 	for _, m := range reg.FindAllString(md, -1) {
+        log.Println(m)
         removeReg := regexp.MustCompile(`\!\[.*\]\(.*\/([^\/]*)\)\n`)
         media := removeReg.FindStringSubmatch(m)[1]
         mediaName := pageID+"-" + media
-        md = removeReg.ReplaceAllString(md,"![](../"+mediaName+")")
+        log.Println("Find Media Name:"+mediaName)
+//        md = removeReg.ReplaceAllString(md,"![](../"+mediaName+")\n")
+        md = strings.Replace(md,m,"![](../"+mediaName+")\n",-1)
 
 		extractMedia(media,mediaName, folderName)
 	}
     reg = regexp.MustCompile(`\[(.+)\]\((.+)\)`)
-    md = reg.ReplaceAllString(md,"![$1]($2)")
-
+    md = reg.ReplaceAllString(md,"[$1]($2)")
+    log.Println("After Fix")
     log.Println(md)
 	// fix media link to MD
 	ioutil.WriteFile(file, []byte(md), os.ModePerm)

@@ -1,4 +1,5 @@
 *.sh
+*.out
 test.go
 resources/
 public/

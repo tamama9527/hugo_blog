@@ -33,4 +33,4 @@ Notion是我很喜歡使用的程式，可以很視覺的安排工作內容，�
 
 source code : 
 
-[](https://github.com/tamama9527/hugo_blog)
+[https://github.com/tamama9527/hugo_blog](https://github.com/tamama9527/hugo_blog)

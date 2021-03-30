@@ -38,7 +38,7 @@ func fmtMediaLink(file string) {
 
 		extractMedia(media,mediaName, folderName)
 	}
-    reg = regexp.MustCompile(`\[(.+)\]\((.+)\)`)
+    reg = regexp.MustCompile(`(?m)^\[(.*)\]\((.+)\)`)
     md = reg.ReplaceAllString(md,"[$2]($2)")
     log.Println("After Fix")
     log.Println(md)

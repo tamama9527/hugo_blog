@@ -380,3 +380,17 @@ source code :
 
 [](https://github.com/tamama9527/hugo_blog)
 2021/03/30 11:14:44 ../content/posts/Notion to Hugo 9546ec4cc5ec495d8a5d9ccb4346003f.md
+Error when running command.  Output:
+[detached HEAD e1d292d] Notion to Hugo
+ 2 files changed, 92 insertions(+)
+ create mode 100644 builder/util/.fmtMediaLink.go.swp
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://tamama9527:a2ca65661eb988e8d27a4c5972f6886d086703cf@github.com/tamama9527/hugo_blog.git/'
+
+Got command status: exit status 128
+[INFO] Server listening
+nX1mq0wcIPvFRNP6SdZ0Qvda
+xoxb-797664940470-1407164310727-G8OuXCsjlVeQpQCTt1GO3PNI
+[INFO] Server listening
+nX1mq0wcIPvFRNP6SdZ0Qvda
+xoxb-797664940470-1407164310727-G8OuXCsjlVeQpQCTt1GO3PNI
